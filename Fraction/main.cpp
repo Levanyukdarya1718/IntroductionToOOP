@@ -69,6 +69,18 @@ public:
 		cout << "Destructor:\t" << this << endl;
 	}
 	//	Metods:
+	Fraction& to_improper()
+	{
+		numerator += integer * denominator;
+		integer = 0;
+		return*this;
+	}
+	Fraction& to_proper()
+	{
+		integer += numerator / denominator;
+		numerator %= denominator;
+		return*this;
+	}
 	void print()const
 	{
 		if (integer)cout << integer;
@@ -82,6 +94,46 @@ public:
 		cout << endl;
 	}
 };
+Fraction operator*( Fraction& left,Fraction& right)
+{
+	left.to_improper();
+	right.to_improper();
+	Fraction result;
+	result.set_numerator(left.get_numerator() * right.get_numerator());
+	result.set_denominator(left.get_denominator() * right.get_denominator());
+	return result;
+
+}
+Fraction operator/ (Fraction left, Fraction right)
+{
+	left.to_improper();
+	right.to_improper();
+	Fraction result;
+	result.set_numerator(left.get_numerator() * right.get_denominator());
+	result.set_denominator(left.get_denominator() * right.get_numerator());
+	return result;
+}
+Fraction operator+(Fraction left, Fraction right)
+{
+	left.to_improper();
+	right.to_improper();
+	Fraction result;
+	result.set_numerator((left.get_numerator() * right.get_denominator()) + (left.get_denominator() * right.get_denominator()));
+	result.set_denominator(left.get_denominator() * right.get_denominator());
+	return result;
+}
+Fraction operator-(Fraction left, Fraction right)
+{
+	left.to_improper();
+	right.to_improper();
+	Fraction result;
+	result.set_numerator((left.get_numerator() * right.get_denominator()) - (left.get_denominator() * right.get_denominator()));
+	result.set_denominator(left.get_denominator() * right.get_denominator());
+	return result;
+}
+
+
+
 //#define CONSTRUCTORS_CHECK
 void main()
 {
@@ -97,6 +149,25 @@ void main()
 	D.print();
 
 #endif // CONSTRUCTORS_CHECK
+	Fraction A(2, 3, 4);
+	A.print();
 
-	
+	Fraction B(3, 4, 5);
+	B.print();
+
+	A.to_improper().print();
+	A.to_proper().print();
+
+	Fraction C =A* B;
+	C.print();
+
+	Fraction D = A / B;
+	D.print();
+
+	Fraction E = A + B;
+	E.print();
+
+	Fraction F = A - B;
+	F.print();
+
 }
