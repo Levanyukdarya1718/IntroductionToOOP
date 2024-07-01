@@ -65,6 +65,19 @@ public:
 		cout << "CppyAssigment:\t\t" << this << endl;
 		return *this;
 	}
+	Point& operator++()//Prefix increment
+	{
+		x++;
+		y++;
+		return *this;
+	}
+	Point operator++(int)
+	{
+		Point old = *this;
+		x++;
+		y++;
+		return old;
+	}
 	//				Methods:
 	void print()const
 	{
@@ -87,10 +100,32 @@ double distance(const Point& A, const Point& B)
 	double distance = sqrt(x_distance * x_distance + y_distance * y_distance);
 	return distance;
 }
+Point operator+(const Point& left, const Point& right)
+{
+	Point result;
+	result.set_x(left.get_x() + right.get_x());
+	result.set_y(left.get_y() + right.get_y());
+	return result;
+}
+bool operator ==(const Point& left, const Point& right)
+{
+	/*if (left.get_x() == right.get_x() && left.get_y() == right.get_y())
+		return true;
+	else
+		return false;*/
+	return left.get_x() == right.get_x() && left.get_y() == right.get_y();
+
+}
+std::ostream& operator<<(std::ostream& os, const Point& obj)
+{
+	return os << "X=" << obj.get_x() << "\tY=" << obj.get_y();
+}
 //#define STRUCT_POINT
 //#define DISTANCE_CHECK
 //#define CONSTRUCTOES_CHECK
-#define ASSIGMENT_CHECK
+//#define ASSIGMENT_CHECK
+//#define ARIFMRTICAL_OPERATOR_CHECK
+//#define COMPARRISON_OPERATORS_CHECK
 void main()
 {
 	setlocale(LC_ALL, "");
@@ -133,7 +168,6 @@ void main()
 		}*/
 		//cout << i << endl;
 		//cout << endl;
-#if defined DISTANCE_CHECK
 #ifdef DISTANCE_CHECK
 	Point A(2, 3);
 	Point B(7, 8);
@@ -150,7 +184,6 @@ void main()
 	cout << "Расстояние между точками 'B' и 'A':  " << distance(B, A) << endl;
 	cout << delimiter << endl;
 #endif // DISTANCE_CHECK
-#endif //DISTANCE_CHECK
 #ifdef ASSIGMENT_CHECK
 	int a, b, c;
 	a = b = c = 0;
@@ -158,10 +191,43 @@ void main()
 
 	Point A, B, C;
 	cout << delimiter << endl;
-	A = B = C = Point(2, 3);
+	A = B = C = Point(2, 3); //Point(2,3) - явно вызываем конструктор 
+							//и создаем временный безымянный объект,
+							//этот объект и передается как параметр
+							//в первый CopyAssigment.
+	cout << delimiter << endl;
 	A.print();
 	B.print();
 	C.print();
+	cout << delimiter << endl;
 #endif //ASSIGMENT_CHECK
+#ifdef ARIFMETICAL_OPERATORS_CHECK
+	int a = 2;
+	int b = 3;
+	int c = a + b;
+
+	Point A(2, 3);
+	A.print();
+
+	Point B(7, 8);
+	B.print();
+
+	Point C = A + B;
+	C.print();
+	
+	Point D = C++;
+	C.print();
+	D.print();
+#endif //ARIFMETICAL_OPERATORS_CHECK
+#ifdef COMPARRISON_OPERATORS_CHECK
+	// << (2 == 3) << endl;
+	//cout << (Point(2, 3) == Point(2, 3)) << endl;
+	Point A(2, 3);
+	Point B(2, 3);
+	cout << (A == B) << endl;
+#endif // COMPARRISON_OPERATORS_CHECK
+	Point A(2, 3);
+	cout << A<<endl;
+
 }
 
